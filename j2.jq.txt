@@ -1,0 +1,6 @@
+let $info := json-doc("bookstore.json")
+let $aud := for $x in $info.Books[] return $x.Authors[].Last_Name
+for $x in $aud, $y in $info.Books[]
+where some $z in $y.Authors[].Last_Name satisfies $z eq $x
+group by $auds := $x
+return {"Author": distinct-values($x),"books":[$y.Title]}
